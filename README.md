@@ -116,7 +116,7 @@ A trade is only executed when at least 2 confirmations agree on the direction.
 
 ## Risk Warning
 
-> **This EA engages in high-frequency trading which carries significant financial risk.** Past performance does not guarantee future results. The 70–80% win rate target is a design goal based on multi-signal confirmation, not a guarantee. Always test thoroughly in a demo account before using real funds. Use appropriate position sizing and never risk more than you can afford to lose.
+> **This EA engages in high-frequency trading which carries significant financial risk.** Past performance does not guarantee future results. The multi-signal confirmation system is designed to improve trade quality, but no specific win rate is guaranteed — actual results depend on market conditions, broker execution, spread, and latency. Always test thoroughly in a demo account before using real funds. Use appropriate position sizing and never risk more than you can afford to lose.
 
 ## Testing
 

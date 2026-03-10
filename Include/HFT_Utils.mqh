@@ -209,7 +209,9 @@ public:
      }
    double            ProfitFactor(void) const
      {
-      return (m_total_loss > 0.0) ? m_total_profit / m_total_loss : 0.0;
+      if(m_total_loss == 0.0)
+         return (m_total_profit > 0.0) ? DBL_MAX : 0.0;  // Infinite if wins with no losses
+      return m_total_profit / m_total_loss;
      }
   };
 

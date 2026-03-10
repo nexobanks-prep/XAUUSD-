@@ -323,7 +323,7 @@ int GetTradeSignal()
          int ma_dir = (ma_fast > ma_slow) ? 1 : -1;
          if(ma_dir == signal)
             confirmations++;
-         else if(ma_dir != signal)
+         else
             return 0;  // MA disagrees - skip trade
         }
      }
@@ -391,18 +391,19 @@ void MonitorPositions()
       datetime open_time = (datetime)PositionGetInteger(POSITION_TIME);
       ulong open_time_msc = (ulong)PositionGetInteger(POSITION_TIME_MSC);
 
-      //--- Calculate hold time in milliseconds
-      //--- Use server time approximation since GetTickCount64 is local
-      ulong current_msc = (ulong)TimeCurrent() * 1000;
+      //--- Calculate hold time in milliseconds using POSITION_TIME_MSC
+      //--- POSITION_TIME_MSC is server time in milliseconds
+      ulong now_msc = (ulong)(TimeCurrent()) * 1000 + (GetTickCount64() % 1000);
       ulong hold_time_ms = 0;
-      if(current_msc > open_time_msc)
-         hold_time_ms = current_msc - open_time_msc;
+      if(now_msc > open_time_msc && open_time_msc > 0)
+         hold_time_ms = now_msc - open_time_msc;
 
       bool should_close = false;
       string close_reason = "";
 
       //--- Close if profit target reached (any profit in scalping mode)
-      if(net_profit > 0.0 && hold_time_ms >= 100)
+      //--- Small delay (100ms) avoids closing on fill-spread noise
+      if(net_profit > 0.0 && hold_time_ms >= (ulong)InpTimerMilliseconds * 2)
         {
          should_close = true;
          close_reason = "PROFIT";
